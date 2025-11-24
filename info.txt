@@ -1,0 +1,8 @@
+********DB
+
+Username: pickaarUserdbdev
+password: pickaarUserdbdev
+
+
+MongoDb: mongodb+srv://pickaarUserdbdev:pickaarUserdbdev@pickaarusercluster.paiwbzf.mongodb.net/?retryWrites=true&w=majority
+COMPASS: mongodb+srv://pickaarUserdbdev:pickaarUserdbdev@pickaarusercluster.paiwbzf.mongodb.net/pickaarUserdbdev

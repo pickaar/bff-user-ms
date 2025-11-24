@@ -1,0 +1,30 @@
+router.route('/handshake').get(controller.login);
+
+/**
+ * @route /api/cust/user/handshake
+ * @method GET
+ * @request {}
+ * @response {
+        "userID": 12345679897,
+        "phoneNo": "9894936594",
+        "userName": "Haresh",
+        "profileImage": "",
+        "loginState": true,
+        "locations": [
+            {
+                "name": "Home",
+                "address": "VGP, Prabhu nagar, Perumbakkam, Chennai - 600100"
+            },
+            {
+                "name": "Vlr Home",
+                "address": "VGP, Prabhu nagar, Perumbakkam, Vellore - 632006"
+            }
+        ]
+    }
+ * @errorCode [
+        200 - {token: string, user: User}
+        404 - User not found
+        401 - Incorrect credentials
+    ]
+    @description: On launch of customer mobile app to get user details and active booking status
+ */
