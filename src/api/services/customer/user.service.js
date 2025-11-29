@@ -83,7 +83,7 @@ class CustomerUserService extends BaseService {
    * @param {String} userData.phoneNo - User phone number
    * @returns {Object} Success response
    */
-  async createNewUser({ otp,phoneNo }) {
+  async createNewUser({ otp, phoneNo }) {
     try {
       //Step 1: Validate OTP to be added here in future
 
@@ -93,7 +93,7 @@ class CustomerUserService extends BaseService {
       //     message: 'Seems like entered OTP is not valid.',
       //   };
       // }
- 
+
       // Step 2: Create new user
       const result = await db.custuser.create({ phoneNo });
 
@@ -120,7 +120,7 @@ class CustomerUserService extends BaseService {
    * @returns {Object} Success response
    */
   async updateUserObj(requestObj) {
-    const { phoneNo, locations, username, emailId } = requestObj;
+    const { phoneNo, locations, userName, emailId, profileImage, status, emergencyContacts } = requestObj;
 
     try {
       // Check if user exists
@@ -132,10 +132,9 @@ class CustomerUserService extends BaseService {
 
       // Build update object using base service method
       const updateObj = this.buildUpdateObject(
-        { username, emailId, locations },
-        ['username', 'emailId', 'locations']
+        { userName, emailId, locations, profileImage, status, emergencyContacts },
+        ['userName', 'emailId', 'locations', 'profileImage', 'status', 'emergencyContacts']
       );
-
       if (Object.keys(updateObj).length === 0) {
         throw new APIError({
           status: httpStatus.BAD_REQUEST,

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const address = new Schema({
     name: { type: String },
     latlng: { type: { type: String, default: "Point" }, coordinates: [Number] },
+    address:{type:String},
     flatHouseNo: { type: String, required: true },
     buildingStreet: { type: String },
     locality: { type: String, required: true },
@@ -20,7 +21,6 @@ const custUserModel = mongoose.model('cust_users', new Schema({
     userName: { type: String },
     emailId: { type: String },
     profileImage: { type: Boolean, default: false },
-    name: { type: String },
     emergencyContacts: [],
     createdOn: { type: Date, default: Date.now },
     locations: [address]

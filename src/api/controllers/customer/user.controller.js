@@ -129,7 +129,6 @@ class CustomerUserController extends BaseController {
    */
   newUser = this.asyncHandler(async (req, res) => {
     const { otp ,phoneNo} = req.body;
-    console.log("OTP:",otp,"PhoneNo:",phoneNo);
     this.validateRequired(req.body, ['otp','phoneNo']);
     
     const result = await userService.createNewUser({ otp, phoneNo });

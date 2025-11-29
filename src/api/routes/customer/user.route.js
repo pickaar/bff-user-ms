@@ -30,6 +30,6 @@ router.route('/createUser').post(controller.newUser);
 /**
  * Update customer user information
  */
-router.route('/updateUser').put(controller.updateUser);
+router.route('/updateUser').patch(controller.updateUser);
 
 module.exports = router;
