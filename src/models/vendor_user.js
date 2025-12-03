@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const vendorUserModel = mongoose.model('vendor_users', new Schema({
+const vehicleFeedback = new Schema({
+    ac: { type: Number, default: 5 },
+    cleaness: { type: Number, default: 5 },
+    comfort: { type: Number, default: 5 },
+    overAll: { type: Number, default: 5 }
+})
+const vendorUserModel = mongoose.model('vendor_user', new Schema({
     name: { type: String, required: true },
     phoneNo: { type: Number, required: true, unique: true },
     address: { type: String, required: true },
@@ -10,7 +16,8 @@ const vendorUserModel = mongoose.model('vendor_users', new Schema({
     exp: { type: Number, required: true },
     aboutUs: { type: String, default: 'Passionate of driving.' },
     languagesKnown: { type: [String], required: true },
-    optedFor: { type: Number, enum: [1, 2, 3] },
+    optedFor: { type: Number, enum: [1, 2, 3] },// Subscription plans
+    vendorFeedbacks: { type: vehicleFeedback, default: {} },
     updatedOn: { type: Date, default: Date.now }
 }));
 

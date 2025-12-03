@@ -13,5 +13,7 @@ router.route('/newCar').post(controller.newCarRegistration);
 router.route('/CarInactivelist').get(controller.inactiveCarList);
 router.route('/activate/:carNo').put(controller.activateVendorCar);
 router.route('/deactivate/:carNo').put(controller.deactivateVendorCar);
+router.route('/getCardById/:carId').put(controller.getCarById);
+
 
 module.exports = router;

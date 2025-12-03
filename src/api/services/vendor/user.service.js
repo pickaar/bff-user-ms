@@ -16,8 +16,7 @@ class VendorUserService extends BaseService {
    */
   async createNewVendoruser(requestObj) {
     try {
-      const result = await db.vendoruser.create(requestObj);
-      
+      const result = await db.vendor_user.create(requestObj);
       return {
         status: httpStatus.OK,
         message: 'Vendor profile created successfully',
@@ -69,12 +68,12 @@ class VendorUserService extends BaseService {
     try {
       // Check if vendor exists
       await this.checkEntityExists(
-        db.vendoruser,
+        db.vendor_user,
         { phoneNo: vendorPhoneNo },
         'Vendor'
       );
 
-      const result = await db.vendoruser.findOneAndUpdate(
+      const result = await db.vendor_user.findOneAndUpdate(
         { phoneNo: vendorPhoneNo },
         { profileStatus: true },
         { new: true }

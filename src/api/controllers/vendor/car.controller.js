@@ -83,9 +83,9 @@ class VendorCarController extends BaseController {
    */
   activateVendorCar = this.asyncHandler(async (req, res) => {
     const { carNo } = req.params;
-    
+
     this.validateRequired({ carNo }, ['carNo']);
-    
+
     const result = await vCarService.activateVendorCar(carNo);
     return this.sendSuccess(res, result.data, httpStatus.OK, result.message);
   });
@@ -117,12 +117,46 @@ class VendorCarController extends BaseController {
    */
   deactivateVendorCar = this.asyncHandler(async (req, res) => {
     const { carNo } = req.params;
-    
+
     this.validateRequired({ carNo }, ['carNo']);
-    
+
     const result = await vCarService.deactivateThisVendorCar(carNo);
     return this.sendSuccess(res, result.data, httpStatus.OK, result.message);
   });
+
+  /**
+   * Get car by ID
+   * @swagger
+   * /api/vendor/car/getCardById/{carId}:
+   *   get:
+   *     summary: Get car details by car ID
+   *     tags: [Vendor - Car]
+   *     parameters:
+   *       - in: path
+   *         name: carId
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Car details retrieved successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Success'
+   *       400:
+   *         $ref: '#/components/responses/BadRequest'
+   *       404:
+   *         $ref: '#/components/responses/NotFound'
+   */
+  getCarById = this.asyncHandler(async (req, res) => {
+    const { carId } = req.params;
+
+    this.validateRequired({ carId }, ['carId']);
+    const result = await vCarService.getCarDetailsById(carId);
+    return this.sendSuccess(res, result.data, httpStatus.OK, result.message);
+  });
+
 }
 
 // Export singleton instance

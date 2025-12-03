@@ -2,6 +2,7 @@ const BaseService = require('../../base/BaseService');
 const db = require('../../../models/index');
 const httpStatus = require('http-status');
 const APIError = require('../../../utils/APIError');
+const { toObjectId } = require('../../../utils/mongoos');
 
 /**
  * Vendor Car Service
@@ -25,12 +26,12 @@ class VendorCarService extends BaseService {
         isPublic: true,
       });
     }
-
+    const vendorRefPhoneNoObject = toObjectId(vendorRefPhoneNo);
     try {
       // Check if vendor exists and is activated
       const vendorUserObj = await this.checkEntityExists(
-        db.vendoruser,
-        { phoneNo: vendorRefPhoneNo },
+        db.vendor_user,
+        { _id: vendorRefPhoneNoObject },
         'Vendor'
       );
 
@@ -41,18 +42,18 @@ class VendorCarService extends BaseService {
           isPublic: true,
         });
       }
-
       // Set carFeedback default value
       const carObjWithFeedback = {
         ...requestParam,
+        vendorRefPhoneNo: vendorRefPhoneNoObject,
         carFeedbacks: {},
       };
 
-      const result = await db.cars.create(carObjWithFeedback);
+      const result = await db.vehicle.create(carObjWithFeedback);
 
       return {
         status: httpStatus.OK,
-        message: 'Car profile created successfully',
+        message: 'Vehicle profile created successfully',
         data: result,
       };
     } catch (error) {
@@ -149,6 +150,33 @@ class VendorCarService extends BaseService {
       this.handleDatabaseError(error);
     }
   }
+
+
+  /**   * Get car details by car ID
+   * @param {String} carId - Car ID
+   * @returns {Object} Car details
+   */
+  async getCarById(carId) {
+    try {
+      const car = await this.checkEntityExists(
+        db.cars,
+        { _id: carId },
+        'Car'
+      );
+
+      return {
+        status: httpStatus.OK,
+        message: 'Car details available',
+        data: car,
+      };
+    } catch (error) {
+      if (error instanceof APIError) {
+        throw error;
+      }
+      this.handleDatabaseError(error);
+    }
+  }
+
 }
 
 // Export singleton instance

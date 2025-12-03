@@ -45,6 +45,17 @@ class VendorUserController extends BaseController {
    *                 type: string
    *               aboutUs:
    *                 type: string
+   *             example:
+   *               name: "Arun Kumar"
+   *               phoneNo: "9876543210"
+   *               address: "123 MG Road, Bengaluru, Karnataka"
+   *               exp: 10
+   *               languagesKnown:
+   *                 - "English"
+   *                 - "Tamil"
+   *                 - "Hindi"
+   *               optedFor: "1"
+   *               aboutUs: "Experienced professional with 10 years in the field."
    *     responses:
    *       200:
    *         description: Vendor user created successfully
