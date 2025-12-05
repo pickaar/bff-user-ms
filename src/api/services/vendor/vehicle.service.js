@@ -16,22 +16,23 @@ class VendorCarService extends BaseService {
    * @param {String} requestParam.vendorRefPhoneNo - Vendor phone number (required)
    * @returns {Object} Success response
    */
-  async registerNewCar(requestParam) {
-    const { vendorRefPhoneNo } = requestParam;
-
-    if (!vendorRefPhoneNo) {
+  async registerNewVehicle(requestParam) {
+    const { vendorRefId } = requestParam;
+    console.log('registerNewVehicle requestParam:', requestParam);
+    if (!vendorRefId) {
       throw new APIError({
         status: httpStatus.BAD_REQUEST,
-        message: 'Vendor phone number is required',
+        message: 'Vendor ID is required',
         isPublic: true,
       });
     }
-    const vendorRefPhoneNoObject = toObjectId(vendorRefPhoneNo);
+
+    const vendorRefIdObject = toObjectId(vendorRefId);
     try {
       // Check if vendor exists and is activated
       const vendorUserObj = await this.checkEntityExists(
         db.vendor_user,
-        { _id: vendorRefPhoneNoObject },
+        { _id: vendorRefIdObject },
         'Vendor'
       );
 
@@ -45,8 +46,8 @@ class VendorCarService extends BaseService {
       // Set carFeedback default value
       const carObjWithFeedback = {
         ...requestParam,
-        vendorRefPhoneNo: vendorRefPhoneNoObject,
-        carFeedbacks: {},
+        vendorRefId: vendorRefIdObject,
+        vehicleFeedbacks: {},
       };
 
       const result = await db.vehicle.create(carObjWithFeedback);
@@ -156,18 +157,19 @@ class VendorCarService extends BaseService {
    * @param {String} carId - Car ID
    * @returns {Object} Car details
    */
-  async getCarById(carId) {
+  async getVehicleDetailsById(vehicleId) {
     try {
-      const car = await this.checkEntityExists(
-        db.cars,
-        { _id: carId },
-        'Car'
+      const vehicleIdObject = toObjectId(vehicleId);
+      const vehicle = await this.checkEntityExists(
+        db.vehicle,
+        { _id: vehicleIdObject },
+        'Vehicle'
       );
 
       return {
         status: httpStatus.OK,
-        message: 'Car details available',
-        data: car,
+        message: 'Vehicle details available',
+        data: vehicle,
       };
     } catch (error) {
       if (error instanceof APIError) {

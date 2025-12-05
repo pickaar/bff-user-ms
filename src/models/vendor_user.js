@@ -18,7 +18,8 @@ const vendorUserModel = mongoose.model('vendor_user', new Schema({
     languagesKnown: { type: [String], required: true },
     optedFor: { type: Number, enum: [1, 2, 3] },// Subscription plans
     vendorFeedbacks: { type: vehicleFeedback, default: {} },
-    updatedOn: { type: Date, default: Date.now }
+    updatedOn: { type: Date, default: Date.now },
+    completedTrips: { type: Number, default: 0 }
 }));
 
 vendorUserModel.createIndexes({ profileStatus: 1, phoneNo: 1 });

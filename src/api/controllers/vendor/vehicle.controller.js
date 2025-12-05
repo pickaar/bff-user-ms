@@ -1,5 +1,5 @@
 const BaseController = require('../../base/BaseController');
-const vCarService = require('../../services/vendor/car.service');
+const vCarService = require('../../services/vendor/vehicle.service');
 const httpStatus = require('http-status');
 
 /**
@@ -9,12 +9,12 @@ const httpStatus = require('http-status');
  */
 class VendorCarController extends BaseController {
   /**
-   * Register new car
+   * Register new Vehicle
    * @swagger
-   * /api/vendor/car/newcar:
+   * /api/vendor/vehicle/newVehicle:
    *   post:
-   *     summary: Register a new car
-   *     tags: [Vendor - Car]
+   *     summary: Register a new Vehicle
+   *     tags: [Vendor - Vehicle]
    *     requestBody:
    *       required: true
    *       content:
@@ -23,7 +23,7 @@ class VendorCarController extends BaseController {
    *             type: object
    *     responses:
    *       200:
-   *         description: Car registered successfully
+   *         description: Vehicle registered successfully
    *         content:
    *           application/json:
    *             schema:
@@ -31,8 +31,8 @@ class VendorCarController extends BaseController {
    *       400:
    *         $ref: '#/components/responses/BadRequest'
    */
-  newCarRegistration = this.asyncHandler(async (req, res) => {
-    const result = await vCarService.registerNewCar(req.body);
+  newVehicleRegistration = this.asyncHandler(async (req, res) => {
+    const result = await vCarService.registerNewVehicle(req.body);
     return this.sendSuccess(res, result.data, httpStatus.OK, result.message);
   });
 
@@ -125,21 +125,21 @@ class VendorCarController extends BaseController {
   });
 
   /**
-   * Get car by ID
+   * Get Vehicle by ID
    * @swagger
-   * /api/vendor/car/getCardById/{carId}:
+   * /api/vendor/vehicle/getVehicleById/{vehicleId}:
    *   get:
-   *     summary: Get car details by car ID
-   *     tags: [Vendor - Car]
+   *     summary: Get vehicle details by vehicle ID
+   *     tags: [Vendor - Vehicle]
    *     parameters:
    *       - in: path
-   *         name: carId
+   *         name: vehicleId
    *         required: true
    *         schema:
    *           type: string
    *     responses:
    *       200:
-   *         description: Car details retrieved successfully
+   *         description: Vehicle details retrieved successfully
    *         content:
    *           application/json:
    *             schema:
@@ -149,11 +149,10 @@ class VendorCarController extends BaseController {
    *       404:
    *         $ref: '#/components/responses/NotFound'
    */
-  getCarById = this.asyncHandler(async (req, res) => {
-    const { carId } = req.params;
-
-    this.validateRequired({ carId }, ['carId']);
-    const result = await vCarService.getCarDetailsById(carId);
+  getVehicleById = this.asyncHandler(async (req, res) => {
+    const { vehicleId } = req.params;
+    this.validateRequired({ vehicleId }, ['vehicleId']);
+    const result = await vCarService.getVehicleDetailsById(vehicleId);
     return this.sendSuccess(res, result.data, httpStatus.OK, result.message);
   });
 

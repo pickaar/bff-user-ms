@@ -2,6 +2,7 @@ const BaseService = require('../../base/BaseService');
 const db = require('../../../models/index');
 const httpStatus = require('http-status');
 const APIError = require('../../../utils/APIError');
+const { toObjectId } = require('../../../utils/mongoos');
 
 /**
  * Vendor User Service
@@ -13,6 +14,7 @@ class VendorUserService extends BaseService {
    * Create new vendor user
    * @param {Object} requestObj - Vendor user data
    * @returns {Object} Success response
+   *
    */
   async createNewVendoruser(requestObj) {
     try {
@@ -58,6 +60,33 @@ class VendorUserService extends BaseService {
       this.handleDatabaseError(error);
     }
   }
+
+  async getVendorUserByID(vendorUserId) {
+    try {
+      const vendorUserIdObject = toObjectId(vendorUserId);
+      const findQuery = { _id: vendorUserIdObject };
+
+      // Check if vendor exists
+      const result = await this.checkEntityExists(
+        db.vendor_user,
+        findQuery,
+        'Vendor'
+      );
+
+      return {
+        status: httpStatus.OK,
+        message: 'Vendor user fetched successfully',
+        data: result,
+      };
+    } catch (error) {
+      console.error('Error in getVerdorUserByID:', error);
+      if (error instanceof APIError) {
+        throw error;
+      }
+      this.handleDatabaseError(error);
+    }
+  }
+
 
   /**
    * Activate a vendor
@@ -124,7 +153,48 @@ class VendorUserService extends BaseService {
       this.handleDatabaseError(error);
     }
   }
+
+  async getVendorAndVehicleInBatch(vendorIds, vehicleIds) {
+    try {
+
+      // Convert string IDs to Mongoose ObjectIds for the query
+      const vendorObjectIds = vendorIds.map(toObjectId);
+      const vehicleObjectIds = vehicleIds.map(toObjectId);
+      // Fetch data concurrently using Promise.all
+      const [vendors, vehicles] = await Promise.all([
+        db.vendor_user.find({ _id: { $in: vendorObjectIds } }).lean().exec(),
+        db.vehicle.find({ _id: { $in: vehicleObjectIds } }).lean().exec()
+      ]);
+      // Map the results into lookup objects (maps) for easy merging later
+      const vendorMap = vendors.reduce((acc, vendor) => {
+        acc[vendor._id.toString()] = vendor;
+        return acc;
+      }, {});
+
+      const vehicleMap = vehicles.reduce((acc, vehicle) => {
+        acc[vehicle._id.toString()] = vehicle;
+        return acc;
+      }, {});
+      return {
+        result: httpStatus.OK,
+        message: 'Successfully fetched vendor and vehicle details.',
+        data: {
+          vendorMap,
+          vehicleMap
+        }
+      };
+
+    } catch (error) {
+      if (error instanceof APIError) {
+        throw error;
+      }
+      this.handleDatabaseError(error);
+    }
+  }
+
 }
+
+
 
 // Export singleton instance
 module.exports = new VendorUserService();

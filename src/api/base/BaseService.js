@@ -45,7 +45,7 @@ class BaseService {
    */
   async checkEntityExists(model, query, entityName = 'Entity') {
     const entity = await model.findOne(query);
-    
+    console.log('checkEntityExists entity:', entity);
     if (!entity) {
       throw new APIError({
         status: httpStatus.NOT_FOUND,

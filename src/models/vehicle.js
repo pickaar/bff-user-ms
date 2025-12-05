@@ -6,12 +6,12 @@ const vehicleFeedback = new Schema({
     cleaness: { type: Number, default: 5 },
     comfort: { type: Number, default: 5 },
     overAll: { type: Number, default: 5 }
-})
+}, { _id: false });
 
 const seating = new Schema({
     adult: { type: Number, required: true },
     child: { type: Number }
-})
+}, { _id: false });
 
 const vehicleModel = mongoose.model('vehicle', new Schema({
     vehicleNo: { type: String, unique: true, required: true },
@@ -23,7 +23,7 @@ const vehicleModel = mongoose.model('vehicle', new Schema({
     vehicleLuggage: { type: Number, required: true },
     createdOn: { type: Date, default: Date.now },
     vehicleFeedbacks: { type: vehicleFeedback, default: {} },
-    vendorRefPhoneNo: { type: Schema.Types.ObjectId, ref: 'vendor_users', required: true }
+    vendorRefId: { type: Schema.Types.ObjectId, ref: 'vendor_users', required: true }
 }));
 
 vehicleModel.createIndexes({ vehicleNo: 1, unique: true });

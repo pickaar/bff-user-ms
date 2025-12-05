@@ -5,12 +5,15 @@ const router = express.Router();
  * @route /api/vendor/user
  */
 const vendorUserRoute = require('./user.route');
-const vendorCarRoute = require('./car.route');
+const vendorVehicleRoute = require('./vehicle.route');
 const vendorWalletRoute = require('./wallet.route');
+const vendorFeedbackRoute = require('./feeback.route');
 
 router.use('/user', vendorUserRoute);
-router.use('/car', vendorCarRoute);
+router.use('/vehicle', vendorVehicleRoute);
 router.use('/wallet', vendorWalletRoute);
+router.use('/feedback', vendorFeedbackRoute);
+
 
 
 module.exports = router;
